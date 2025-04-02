@@ -10,7 +10,7 @@ yaml = YAML()
 DEFAULT_CONFIG = {
     "NUM_SLICES": 2,  # Number of network slices to create
     "NUM_COTS_SUBSCRIBERS": 0,  # Number of COTS subscribers
-    "NUM_SAMPLE_SUBSCRIBERS": 2,  # Number of simulated subscribers
+    "NUM_SAMPLE_SUBSCRIBERS": 3,  # Number of simulated subscribers
     "NUM_AUTO_GENERATED_SUBSCRIBERS": 0,  # Number of auto-generated subscribers (for MSD deployment only)
     "DEFAULT_UPLINK_SPEED": {"value": 1, "unit": Open5GS.Unit.Gbps},
     "DEFAULT_DOWNLINK_SPEED": {"value": 1, "unit": Open5GS.Unit.Gbps},
@@ -20,8 +20,8 @@ DEFAULT_CONFIG = {
         "pre_emption_capability": Open5GS.Status.DISABLED,
         "pre_emption_vulnerability": Open5GS.Status.DISABLED,
     },
-    "DEFAULT_KEY": "465B5CE8B199B49FAA5F0A2EE238A6BC",
-    "DEFAULT_OPC": "E8ED289DEBA952E4283B54E88E6183CA",
+    "DEFAULT_KEY": "fec86ba6eb707ed08905757b1bb44b8f",
+    "DEFAULT_OPC": "C42449363BBAD02B66D16BC975D77CC1",
     "DATA_DIR": "data",
     "SLICE_FILE_PATH": "data/slices.yaml",
     "SUBSCRIBER_FILE_PATH": "data/subscribers.yaml"
@@ -32,7 +32,7 @@ DEFAULT_CONFIG = {
 slice_data = {
     "slice_1": {
         "sst": 1,
-        "sd": "000001",
+        "sd": "0xFFFFFF", 
         "default_indicator": True,
         "session": [
             {
@@ -55,8 +55,8 @@ slice_data = {
         ],
     },
     "slice_2": {
-        "sst": 2,
-        "sd": "000002",
+        "sst": 1,
+        "sd": "000001",
         "default_indicator": True,
         "session": [
             {
@@ -82,7 +82,7 @@ slice_data = {
 simulated_subscriber_data = {
     "subscriber_1": {
         "_id": "",
-        "imsi": "001010000000001",
+        "imsi": "001010000005001",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
@@ -93,17 +93,17 @@ simulated_subscriber_data = {
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
         },
         "security": {
-            "k": "465B5CE8B199B49FAA5F0A2EE238A6BC",
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
             "amf": "8000",
             "op": None,
-            "opc": "E8ED289DEBA952E4283B54E88E6183CA",
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
         },
         "schema_version": 1,
         "__v": 0,
     },
     "subscriber_2": {
         "_id": "",
-        "imsi": "001010000000002",
+        "imsi": "001010000005002",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
@@ -114,17 +114,17 @@ simulated_subscriber_data = {
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
         },
         "security": {
-            "k": "B199B49F465B5CE8E238A6BCAA5F0A2E",
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
             "amf": "8000",
             "op": None,
-            "opc": "283B54E8E8ED289D8E6183CAEBA952E4",
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
         },
         "schema_version": 1,
         "__v": 0,
     },
     "subscriber_3": {
         "_id": "",
-        "imsi": "001010000000003",
+        "imsi": "001010000005003",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
@@ -135,10 +135,10 @@ simulated_subscriber_data = {
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
         },
         "security": {
-            "k": "465B5CE8B199B49FAA5F0A2EE238A6BD",
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
             "amf": "8000",
             "op": None,
-            "opc": "E8ED289DEBA952E4283B54E88E6183CB",
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
         },
         "schema_version": 1,
         "__v": 0,
