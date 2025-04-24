@@ -82,7 +82,7 @@ slice_data = {
 simulated_subscriber_data = {
     "subscriber_1": {
         "_id": "",
-        "imsi": "001010000005001",
+        "imsi": "001010000001121",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
