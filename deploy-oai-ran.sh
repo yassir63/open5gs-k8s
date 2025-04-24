@@ -13,6 +13,10 @@ print_error() {
     echo -e "\e[1;31mERROR: $1\e[0m"
 }
 
+print_warning() {
+    echo -e "\e[1;31mINFO: $1\e[0m"
+}
+
 print_subheader() {
     echo -e "\e[1;36m--- $1 ---\e[0m"
 }
@@ -20,6 +24,8 @@ print_subheader() {
 # Set the namespace for Open5GS
 NAMESPACE="open5gs"
 TIMEOUT_DURATION=10  # Set the timeout duration in seconds
+
+print_warning "Before deploying OAI RAN, please check the oai-ran/prepare-demo-oai.sh file and adjust it to your deployment environment."
 
 print_header "Preparing cluster for RAN deployment"
 print_subheader "Checking if namespace '$NAMESPACE' exists"
