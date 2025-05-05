@@ -16,6 +16,6 @@ python3 mongo-tools/generate-data.py
 python3 mongo-tools/add-subscribers.py
 print_success "Subscribers added."
 
-source $SCRIPT_DIRECTORY/deploy-ran.sh
-echo "sleep 10s before running ping from UEs"; sleep 10
-source $SCRIPT_DIRECTORY/ping-test.sh
+source $SCRIPT_DIRECTORY/deploy-oai-ran.sh
+#echo "sleep 10s before running ping from UEs"; sleep 10
+#source $SCRIPT_DIRECTORY/ping-test.sh

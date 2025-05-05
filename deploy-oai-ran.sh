@@ -94,19 +94,23 @@ else
     echo "$output"  # Print the list of subscribers if found
 fi
 
-print_header "Preparing OAI RAN files (RAN Deployment [1/3])"
+print_header "Preparing OAI RAN files (RAN Deployment [1/4])"
 cd oai-ran
 chmod +x ./prepare-demo-oai.sh
 ./prepare-demo-oai.sh -a
 
-print_header "Deploying the OAI gNodeB (RAN Deployment [2/3])"
+print_header "Deploying the OAI gNodeB (RAN Deployment [2/4])"
 ./demo-oai.sh start-gnb
 sleep 5
 print_success "OAI gNodeB deployed successfully."
 
-print_header "Deploying OAI NR-UE (RAN Deployment [3/3])"
+print_header "Deploying OAI NR-UE (RAN Deployment [3/4])"
 ./demo-oai.sh start-nr-ue
 print_success "OAI NR-UE deployed successfully."
+
+print_header "Deploying OAI NR-UE2 (RAN Deployment [4/4])"
+./demo-oai.sh start-nr-ue2
+print_success "OAI NR-UE2 deployed successfully."
 
 # Final message for the user
 print_header "Deployment Complete"

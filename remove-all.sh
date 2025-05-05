@@ -9,7 +9,7 @@ print_success() {
 
 SCRIPT_DIRECTORY="$(dirname $(realpath "$0"))"
 
-source $SCRIPT_DIRECTORY/remove-ran.sh
+source $SCRIPT_DIRECTORY/remove-oai-ran.sh
 print_header "Deleting subscribers"
 python3 mongo-tools/delete-subscribers.py
 print_success "Subscribers deleted."
