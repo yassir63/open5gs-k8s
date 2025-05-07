@@ -21,24 +21,29 @@ print_subheader() {
 NAMESPACE="open5gs"
 
 # Delete the OAI UE
-print_header "Removing OAI NR-UE (RAN Deployment [1/4])"
+print_header "Removing OAI NR-UE (RAN Deployment [1/5])"
 cd oai-ran
 ./demo-oai.sh stop-nr-ue
 print_success "OAI NR-UE removed."
 
 # Delete the OAI UE 2
-print_header "Removing OAI NR-UE2 (RAN Deployment [2/4])"
+print_header "Removing OAI NR-UE2 (RAN Deployment [2/5])"
 cd oai-ran
 ./demo-oai.sh stop-nr-ue2
 print_success "OAI NR-UE2 removed."
 
 # Delete the OAI gNodeB
-print_header "Removing OAI gNodeB (RAN Deployment [3/4])"
+print_header "Removing OAI gNodeB (RAN Deployment [3/5])"
 ./demo-oai.sh stop-gnb
 print_success "OAI gNodeB removed."
 
+# Delete the OAI FlexRIC
+print_header "Removing OAI FlexRIC (RAN Deployment [3/5])"
+./demo-oai.sh stop-flexric
+print_success "OAI FlexRIC removed."
+
 # Delete leftover files
-print_header "Removing leftover OAI RAN files (RAN Deployment [4/4])"
+print_header "Removing leftover OAI RAN files (RAN Deployment [5/5])"
 rm -rf oai-cn5g-fed/ oai5g-rru/ configure-demo-oai.sh demo-oai.sh
 cd ..
 print_success "Leftover OAI RAN files removed."
