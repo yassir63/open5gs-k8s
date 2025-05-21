@@ -6,7 +6,7 @@
 
 # server used for following OAI5G functions
 HOST_AMF_UPF="10.10.3.200" # IP adress of the AMF
-HOST_GNB="precision-7530" # name of the Kubernetes node on which the gnb will be deployed
+HOST_GNB="sopnode-f1" # name of the Kubernetes node on which the gnb will be deployed
 
 # k8s namespace
 NS="open5gs"
@@ -29,9 +29,9 @@ RUN_MODE="gnb-only"
 # RAN options
 #RRU="jaguar"
 #RRU="panther"
-RRU="rfsim"
+#RRU="rfsim"
 #RRU="b210"
-#RRU="n300"
+RRU="n300"
 #RRU="n320"
 #GNB_MODE="cudu"
 #GNB_MODE="cucpup"
@@ -48,7 +48,7 @@ LOGS="false"
 PCAP="false"
 MONITORING="true"
 FLEXRIC="true"
-LOCAL_INTERFACE="wlp111s0"
+LOCAL_INTERFACE="ens2f0"
 #PCAP="true"
 
 # identity used to git pull
