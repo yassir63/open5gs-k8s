@@ -124,7 +124,7 @@ simulated_subscriber_data = {
     },
     "subscriber_3": {
         "_id": "",
-        "imsi": "001010000005003",
+        "imsi": "001010000000007",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
