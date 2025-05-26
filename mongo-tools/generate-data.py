@@ -82,7 +82,7 @@ slice_data = {
 simulated_subscriber_data = {
     "subscriber_1": {
         "_id": "",
-        "imsi": "001010000001121",
+        "imsi": "001010000000006",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
@@ -103,7 +103,7 @@ simulated_subscriber_data = {
     },
     "subscriber_2": {
         "_id": "",
-        "imsi": "001010000005002",
+        "imsi": "0001010000000007",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
@@ -124,7 +124,7 @@ simulated_subscriber_data = {
     },
     "subscriber_3": {
         "_id": "",
-        "imsi": "001010000000007",
+        "imsi": "001010000000008",
         "subscribed_rau_tau_timer": 12,
         "network_access_mode": 0,
         "subscriber_status": 0,
