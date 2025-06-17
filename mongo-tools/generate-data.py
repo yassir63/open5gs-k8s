@@ -143,6 +143,48 @@ simulated_subscriber_data = {
         "schema_version": 1,
         "__v": 0,
     },
+    "subscriber_4": {
+        "_id": "",
+        "imsi": "001010000000013",
+        "subscribed_rau_tau_timer": 12,
+        "network_access_mode": 0,
+        "subscriber_status": 0,
+        "access_restriction_data": 32,
+        "slice": [slice_data["slice_2"]],
+        "ambr": {
+            "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+            "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+        },
+        "security": {
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
+            "amf": "8000",
+            "op": None,
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
+        },
+        "schema_version": 1,
+        "__v": 0,
+    },
+    "subscriber_5": {
+        "_id": "",
+        "imsi": "001010000000014",
+        "subscribed_rau_tau_timer": 12,
+        "network_access_mode": 0,
+        "subscriber_status": 0,
+        "access_restriction_data": 32,
+        "slice": [slice_data["slice_2"]],
+        "ambr": {
+            "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+            "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+        },
+        "security": {
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
+            "amf": "8000",
+            "op": None,
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
+        },
+        "schema_version": 1,
+        "__v": 0,
+    },
 }
 cots_subscriber_data = {
     "pixel_1": {
