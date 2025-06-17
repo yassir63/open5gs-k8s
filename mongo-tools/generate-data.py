@@ -108,7 +108,7 @@ simulated_subscriber_data = {
         "network_access_mode": 0,
         "subscriber_status": 0,
         "access_restriction_data": 32,
-        "slice": [slice_data["slice_1"]],
+        "slice": [slice_data["slice_2"]],
         "ambr": {
             "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
