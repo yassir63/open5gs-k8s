@@ -4,6 +4,7 @@ metadata:
   name: mongodb
   labels:
     app.kubernetes.io/name: mongodb
+    app: open5gs
 spec:
   serviceName: mongodb
   updateStrategy:
