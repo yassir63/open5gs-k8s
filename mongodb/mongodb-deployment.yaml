@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: mongodb
+        app: open5gs
     spec:
       serviceAccountName: mongodb
       securityContext:
