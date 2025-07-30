@@ -5,7 +5,7 @@
 #
 
 # server used for following OAI5G functions
-HOST_AMF_UPF="10.10.3.200" # IP adress of the AMF
+HOST_AMF_UPF="10.10.3.200" # IP address of the AMF
 HOST_GNB="sopnode-f1" # name of the Kubernetes node on which the gnb will be deployed
 
 # k8s namespace
@@ -60,6 +60,9 @@ RC_MAIL="r2labuser@turletti.com"
 DIR="$(pwd)"
 COMMAND=$(basename $0)
 
+# optional conf override
+CONF_OVERRIDE=""
+
 function git_pull(){
 
     echo "Step 1: clean up previous oai5g-rru and oai-cn5g-fed.git local directories if any"
@@ -78,11 +81,34 @@ function git_pull(){
     echo "Pull done. If necessary, you can manually modify these 2 scripts before running $COMMAND configure."
 }
 
+function patch_conf_file() {
+    echo "Applying CONF override in demo-oai.sh based on RRU=$RRU and CONF=$CONF_OVERRIDE"
+
+    case "$RRU" in
+        n300|n320)
+            sed -i "s|^CONF_n320=.*|CONF_n320=\"$CONF_OVERRIDE\"|" demo-oai.sh
+            ;;
+        jaguar|panther)
+            sed -i "s|^CONF_jaguar=.*|CONF_jaguar=\"$CONF_OVERRIDE\"|" demo-oai.sh
+            ;;
+        rfsim)
+            sed -i "s|^CONF_rfsim=.*|CONF_rfsim=\"$CONF_OVERRIDE\"|" demo-oai.sh
+            ;;
+        *)
+            echo "Unknown RRU type '$RRU' for CONF override. Skipping patch."
+            ;;
+    esac
+}
 
 function configure_all_scripts(){
     echo "Step 1: use parameters from configure-demo-oai.sh to configure demo-oai.sh script"
     echo "./configure-demo-oai.sh update $NS $HOST_AMF_UPF $HOST_GNB $RRU $RUN_MODE $LOGS $PCAP $MONITORING $FLEXRIC $LOCAL_INTERFACE $DIR $CN_MODE $GNB_MODE $DNN0 $DNN1 $RC_NAME $RC_PWD $RC_MAIL"
     ./configure-demo-oai.sh update $NS $HOST_AMF_UPF $HOST_GNB $RRU $RUN_MODE $LOGS $PCAP $MONITORING $FLEXRIC $LOCAL_INTERFACE $DIR $CN_MODE $GNB_MODE $DNN0 $DNN1 $RC_NAME $RC_PWD $RC_MAIL
+
+    if [[ -n "$CONF_OVERRIDE" ]]; then
+        patch_conf_file
+    fi
+
     echo "Step 2: configure OAI5G charts to match the target scenario"
     echo "run init"
     ./demo-oai.sh init
@@ -93,16 +119,17 @@ function configure_all_scripts(){
 
 function usage() {
     echo "$COMMAND: Invalid option"
-    echo "USAGE: $COMMAND [-B OAI_BRANCH] [-R RRU] -a|-p|-c"
+    echo "USAGE: $COMMAND [-B OAI_BRANCH] [-R RRU] [-F CONF_FILE] -a|-p|-c"
     echo "$COMMAND -B: select the oai5g-rru tag or branch to pull, default is develop-r2lab."
-    echo "$COMMAND -R: select the RRU to use, default is jaguar."
+    echo "$COMMAND -R: select the RRU to use, default is n300."
+    echo "$COMMAND -F: optional conf file to override CONF_* variable for selected RRU."
     echo "$COMMAND -a: git pull the latest code and configure the OAI5G charts for the target scenario."
     echo "$COMMAND -p: git pull the latest code. If necessary, you can manually modify the scripts before running configure."
     echo "$COMMAND -c: configure the OAI5G charts for the target scenario, configure must only be run after a fresh pull, i.e., 2 consecutive configure will fail."
     exit 1
 }
 
-while getopts "apcB:R:" opt; do
+while getopts "apcB:R:F:" opt; do
   case "$opt" in
     a) action='all'
       ;;
@@ -113,6 +140,8 @@ while getopts "apcB:R:" opt; do
     B) OAI_BRANCH=$OPTARG
       ;;
     R) RRU_OPT=$OPTARG
+      ;;
+    F) CONF_OVERRIDE=$OPTARG
       ;;
     *) usage
       ;;
