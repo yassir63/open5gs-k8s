@@ -12,9 +12,9 @@ HOST_GNB="sopnode-f1" # name of the Kubernetes node on which the gnb will be dep
 NS="open5gs"
 
 # Repo/Branch/TAG for code
-REPO_OAI5G_RRU="https://github.com/Ziyad-Mabrouk/oai5g-rru.git"
+REPO_OAI5G_RRU="https://github.com/yassir63/oai5g-rru.git"
 TAG_OAI5G_RRU="gen-cn2"
-REPO_OAI_CN5G_FED="https://github.com/Ziyad-Mabrouk/oai-cn5g-fed"
+REPO_OAI_CN5G_FED="https://github.com/yassir63/oai-cn5g-fed"
 TAG_OAI_CN5G_FED="gen-cn2"
 
 # CN mode
