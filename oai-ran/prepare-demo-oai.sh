@@ -47,7 +47,7 @@ DNN1="streaming"
 LOGS="false"
 PCAP="false"
 MONITORING="true"
-FLEXRIC="true"
+FLEXRIC="false"
 LOCAL_INTERFACE="ens2f0"
 #PCAP="true"
 
