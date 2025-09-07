@@ -22,8 +22,6 @@ CN_MODE="advance"
 #CN_MODE="basic"
 
 # oai5g-rru running mode 
-#RUN_MODE="full"
-#RUN_MODE="gnb-upf"
 RUN_MODE="gnb-only"
 
 # RAN options
