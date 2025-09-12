@@ -1,3 +1,0 @@
-[submodule "k8s_srsran_open5gs"]
-	path = k8s_srsran_open5gs
-	url = https://github.com/yassir63/k8s_srsran_open5gs.git
