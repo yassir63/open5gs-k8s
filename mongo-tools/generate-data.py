@@ -97,6 +97,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -118,6 +119,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -139,6 +141,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -160,6 +163,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -181,6 +185,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -202,6 +207,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -223,6 +229,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -244,6 +251,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
@@ -265,6 +273,7 @@ simulated_subscriber_data = {
             "amf": "8000",
             "op": None,
             "opc": DEFAULT_CONFIG["DEFAULT_OPC"],
+            "sqn": "000000000000"
         },
         "schema_version": 1,
         "__v": 0,
