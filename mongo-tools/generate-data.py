@@ -269,69 +269,71 @@ simulated_subscriber_data = {
         "schema_version": 1,
         "__v": 0,
     },
+
+    # NEW — your real UEs
     "subscriber_10": {
-    "_id": "",
-    "imsi": "001010000000101",
-    "subscribed_rau_tau_timer": 12,
-    "network_access_mode": 0,
-    "subscriber_status": 0,
-    "access_restriction_data": 32,
-    "slice": [slice_data["slice_1"]],  # internet slice
-    "ambr": {
-        "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
-        "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+        "_id": "",
+        "imsi": "001010000000101",
+        "subscribed_rau_tau_timer": 12,
+        "network_access_mode": 0,
+        "subscriber_status": 0,
+        "access_restriction_data": 32,
+        "slice": [slice_data["slice_1"]],  # internet slice (default)
+        "ambr": {
+            "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+            "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+        },
+        "security": {
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
+            "amf": "8000",
+            "op": None,
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
+        },
+        "schema_version": 1,
+        "__v": 0,
     },
-    "security": {
-        "k": "fec86ba6eb707ed08905757b1bb44b8f",
-        "amf": "8000",
-        "op": None,
-        "opc": "C42449363BBAD02B66D16BC975D77CC1",
+    "subscriber_11": {
+        "_id": "",
+        "imsi": "001010000000102",
+        "subscribed_rau_tau_timer": 12,
+        "network_access_mode": 0,
+        "subscriber_status": 0,
+        "access_restriction_data": 32,
+        "slice": [slice_data["slice_2"]],  # streaming slice
+        "ambr": {
+            "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+            "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+        },
+        "security": {
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
+            "amf": "8000",
+            "op": None,
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
+        },
+        "schema_version": 1,
+        "__v": 0,
     },
-    "schema_version": 1,
-    "__v": 0,
-},
-"subscriber_11": {
-    "_id": "",
-    "imsi": "001010000000102",
-    "subscribed_rau_tau_timer": 12,
-    "network_access_mode": 0,
-    "subscriber_status": 0,
-    "access_restriction_data": 32,
-    "slice": [slice_data["slice_2"]],  # streaming slice
-    "ambr": {
-        "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
-        "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+    "subscriber_12": {
+        "_id": "",
+        "imsi": "001010000000103",
+        "subscribed_rau_tau_timer": 12,
+        "network_access_mode": 0,
+        "subscriber_status": 0,
+        "access_restriction_data": 32,
+        "slice": [slice_data["slice_1"]],  # internet slice (default)
+        "ambr": {
+            "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+            "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
+        },
+        "security": {
+            "k": "fec86ba6eb707ed08905757b1bb44b8f",
+            "amf": "8000",
+            "op": None,
+            "opc": "C42449363BBAD02B66D16BC975D77CC1",
+        },
+        "schema_version": 1,
+        "__v": 0,
     },
-    "security": {
-        "k": "fec86ba6eb707ed08905757b1bb44b8f",
-        "amf": "8000",
-        "op": None,
-        "opc": "C42449363BBAD02B66D16BC975D77CC1",
-    },
-    "schema_version": 1,
-    "__v": 0,
-},
-"subscriber_12": {
-    "_id": "",
-    "imsi": "001010000000103",
-    "subscribed_rau_tau_timer": 12,
-    "network_access_mode": 0,
-    "subscriber_status": 0,
-    "access_restriction_data": 32,
-    "slice": [slice_data["slice_1"]],  # internet slice
-    "ambr": {
-        "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
-        "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
-    },
-    "security": {
-        "k": "fec86ba6eb707ed08905757b1bb44b8f",
-        "amf": "8000",
-        "op": None,
-        "opc": "C42449363BBAD02B66D16BC975D77CC1",
-    },
-    "schema_version": 1,
-    "__v": 0,
-},
 }
 cots_subscriber_data = {
     "pixel_1": {
