@@ -57,7 +57,7 @@ slice_data = {
     "slice_2": {
         "sst": 1,
         "sd": "000001",
-        "default_indicator": True,
+        "default_indicator": False,
         "session": [
             {
                 "name": "streaming",
