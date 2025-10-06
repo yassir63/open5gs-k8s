@@ -10,7 +10,7 @@ yaml = YAML()
 DEFAULT_CONFIG = {
     "NUM_SLICES": 2,  # Number of network slices to create
     "NUM_COTS_SUBSCRIBERS": 0,  # Number of COTS subscribers
-    "NUM_SAMPLE_SUBSCRIBERS": 9,  # Number of simulated subscribers
+    "NUM_SAMPLE_SUBSCRIBERS": 12,  # Number of simulated subscribers
     "NUM_AUTO_GENERATED_SUBSCRIBERS": 0,  # Number of auto-generated subscribers (for MSD deployment only)
     "DEFAULT_UPLINK_SPEED": {"value": 1, "unit": Open5GS.Unit.Gbps},
     "DEFAULT_DOWNLINK_SPEED": {"value": 1, "unit": Open5GS.Unit.Gbps},
