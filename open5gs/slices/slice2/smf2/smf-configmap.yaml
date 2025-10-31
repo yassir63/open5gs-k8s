@@ -53,7 +53,7 @@ data:
 
       info:
         - s_nssai:
-          - sst: 2
+          - sst: 1
             sd: 000002
             dnn:
              - streaming
