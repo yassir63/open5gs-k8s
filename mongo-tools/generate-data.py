@@ -55,7 +55,7 @@ slice_data = {
         ],
     },
     "slice_2": {
-        "sst": 2,
+        "sst": 1,
         "sd": "000002",
         "default_indicator": True,
         "session": [
