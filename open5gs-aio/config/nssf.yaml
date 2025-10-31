@@ -20,5 +20,5 @@ nssf:
             sd: 000001
         - uri: http://127.0.0.10:80
           s_nssai:
-            sst: 2
+            sst: 1
             sd: 000002
