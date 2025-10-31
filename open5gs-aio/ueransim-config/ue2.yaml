@@ -41,17 +41,17 @@ sessions:
   - type: 'IPv4'
     apn: 'streaming'
     slice:
-      sst: 2
+      sst: 1
       sd: 000002
 
 # Configured NSSAI for this UE by HPLMN
 configured-nssai:
-  - sst: 2
+  - sst: 1
     sd: 000002
 
 # Default Configured NSSAI for this UE
 default-nssai:
-  - sst: 2
+  - sst: 1
     sd: 000002
 
 # Supported integrity algorithms by this UE
