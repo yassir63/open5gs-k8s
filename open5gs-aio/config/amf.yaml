@@ -39,7 +39,7 @@ amf:
         mnc: 01
       s_nssai:
         - sst: 1
-          sd: 000001
+          sd: FFFFFF
         - sst: 1
           sd: 000002
   security:

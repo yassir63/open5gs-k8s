@@ -54,6 +54,6 @@ data:
       info:
         - s_nssai:
           - sst: 1
-            sd: 000001
+            sd: FFFFFF
             dnn:
              - internet

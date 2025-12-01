@@ -26,7 +26,7 @@ data:
             - uri: http://nrf-nnrf:80
               s_nssai:
                 sst: 1
-                sd: 000001
+                sd: FFFFFF
             - uri: http://nrf-nnrf:80
               s_nssai:
                 sst: 1
