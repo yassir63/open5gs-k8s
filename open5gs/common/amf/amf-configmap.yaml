@@ -56,6 +56,8 @@ data:
       network_name:
           full: Open5GS
       amf_name: open5gs-amf0
+      smf_selection:
+       enable: true
 
       time:
         t3512:
