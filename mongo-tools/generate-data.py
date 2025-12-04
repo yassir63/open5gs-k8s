@@ -32,7 +32,7 @@ DEFAULT_CONFIG = {
 slice_data = {
     "slice_1": {
         "sst": 1,
-        "sd": "0xFFFFFF", 
+        "sd": "FFFFFF", 
         "default_indicator": True,
         "session": [
             {
