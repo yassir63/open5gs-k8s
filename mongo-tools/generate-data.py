@@ -278,7 +278,7 @@ simulated_subscriber_data = {
         "network_access_mode": 0,
         "subscriber_status": 0,
         "access_restriction_data": 32,
-        "slice": [slice_data["slice_2"]],  # internet slice (default)
+        "slice": [slice_data["slice_1"]],  # internet slice (default)
         "ambr": {
             "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
@@ -299,7 +299,7 @@ simulated_subscriber_data = {
         "network_access_mode": 0,
         "subscriber_status": 0,
         "access_restriction_data": 32,
-        "slice": [slice_data["slice_1"]],  # streaming slice
+        "slice": [slice_data["slice_2"]],  # streaming slice
         "ambr": {
             "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
@@ -320,7 +320,7 @@ simulated_subscriber_data = {
         "network_access_mode": 0,
         "subscriber_status": 0,
         "access_restriction_data": 32,
-        "slice": [slice_data["slice_2"]],  # internet slice (default)
+        "slice": [slice_data["slice_1"]],  # internet slice (default)
         "ambr": {
             "uplink": {"value": 1, "unit": Open5GS.Unit.Gbps},
             "downlink": {"value": 1, "unit": Open5GS.Unit.Gbps},
