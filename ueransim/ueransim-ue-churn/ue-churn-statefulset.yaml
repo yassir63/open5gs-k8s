@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ueransim-ue-churn
+  labels:
+    app: ueransim
+    component: ue
+    profile: churn
+spec:
+  serviceName: ueransim-ue-churn
+  replicas: 0
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: ueransim
+      component: ue
+      profile: churn
+  template:
+    metadata:
+      labels:
+        app: ueransim
+        component: ue
+        profile: churn
+    spec:
+      initContainers:
+        - name: wait-gnb
+          image: busybox:1.32.0
+          env:
+            - name: DEPENDENCIES
+              value: gnb-service:4997
+          command: ["sh", "-c", "until nc -z -u $DEPENDENCIES; do echo waiting for the gNB; sleep 2; done;"]
+      containers:
+        - image: ghcr.io/niloysh/ueransim:v3.2.6
+          imagePullPolicy: Always
+          name: ue
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN"]
+          command: ["/bin/bash", "/ueransim/config/entrypoint.sh"]
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: UE_IMSI_PREFIX
+              value: "0010100001"
+            - name: UE_IMSI_SUFFIX_START
+              value: "0"
+            - name: UE_KEY
+              value: "fec86ba6eb707ed08905757b1bb44b8f"
+            - name: UE_OPC
+              value: "C42449363BBAD02B66D16BC975D77CC1"
+            - name: UE_GNB_HOST
+              value: "gnb-service"
+            - name: UE_SLICE1_APN
+              value: "internet"
+            - name: UE_SLICE1_SD
+              value: "000001"
+            - name: UE_SLICE2_APN
+              value: "streaming"
+            - name: UE_SLICE2_SD
+              value: "000002"
+          volumeMounts:
+            - mountPath: /ueransim/config
+              name: ue-churn-volume
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+        - name: ue-churn-volume
+          configMap:
+            name: ue-churn-configmap
+            items:
+              - key: entrypoint.sh
+                path: entrypoint.sh
+                mode: 0755
