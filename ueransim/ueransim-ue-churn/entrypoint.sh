@@ -12,12 +12,27 @@ suffix_start="${UE_IMSI_SUFFIX_START:-0}"
 suffix=$((10#$suffix_start + 10#$ordinal))
 supi="$(printf 'imsi-%s%05d' "$imsi_prefix" "$suffix")"
 
+normalize_sd() {
+  local raw="${1,,}"
+  raw="${raw#0x}"
+  if [ -z "$raw" ] || [ "$raw" = "empty" ] || [ "$raw" = "none" ] || [ "$raw" = "null" ]; then
+    raw="ffffff"
+  fi
+  if ! [[ "$raw" =~ ^[0-9a-f]{1,6}$ ]]; then
+    echo "Invalid slice SD: $1" >&2
+    exit 1
+  fi
+  printf '0x%06x' "$((16#$raw))"
+}
+
 if [ $((ordinal % 2)) -eq 0 ]; then
   apn="${UE_SLICE1_APN:-internet}"
-  sd="${UE_SLICE1_SD:-000001}"
+  sst="${UE_SLICE1_SST:-1}"
+  sd="$(normalize_sd "${UE_SLICE1_SD:-ffffff}")"
 else
   apn="${UE_SLICE2_APN:-streaming}"
-  sd="${UE_SLICE2_SD:-000002}"
+  sst="${UE_SLICE2_SST:-1}"
+  sd="$(normalize_sd "${UE_SLICE2_SD:-100000}")"
 fi
 
 mkdir -p /dev/net
@@ -55,15 +70,15 @@ sessions:
   - type: 'IPv4'
     apn: '${apn}'
     slice:
-      sst: 1
+      sst: ${sst}
       sd: ${sd}
 
 configured-nssai:
-  - sst: 1
+  - sst: ${sst}
     sd: ${sd}
 
 default-nssai:
-  - sst: 1
+  - sst: ${sst}
     sd: ${sd}
 
 integrity:
@@ -81,5 +96,5 @@ integrityMaxRate:
   downlink: 'full'
 EOF
 
-echo "Starting UERANSIM UE ordinal=${ordinal} supi=${supi} apn=${apn} sd=${sd}"
+echo "Starting UERANSIM UE ordinal=${ordinal} supi=${supi} apn=${apn} slice=${sst}:${sd}"
 exec /ueransim/nr-ue -c /tmp/open5gs-ue.yaml

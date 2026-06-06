@@ -13,7 +13,7 @@ DATA_DIR = "data"
 yaml = YAML()
 
 
-def add_subscribers(subscriber_names: list):
+def add_subscribers(subscriber_names: list, replace_existing: bool = False):
     with open(DATA_DIR + "/subscribers.yaml", "r") as file:
         configured_subscribers = yaml.load(file.read())
 
@@ -32,9 +32,12 @@ def add_subscribers(subscriber_names: list):
 
         imsi = subscriber_info["imsi"]
         if imsi in subscriber_imsis:
-            log.warning(f"Subscriber {subscriber_name} already exists in the database.")
-            continue
-        
+            if not replace_existing:
+                log.warning(f"Subscriber {subscriber_name} already exists in the database.")
+                continue
+            Open5GS_1.delete_subscriber(imsi)
+            log.info(f"Replacing existing subscriber {subscriber_name} ({imsi})")
+
         subscriber_info["_id"] = ObjectId()
         Open5GS_1.add_subscriber(subscriber_info)
         log.info(f"Added {subscriber_name}")
@@ -43,6 +46,12 @@ def add_subscribers(subscriber_names: list):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Add or delete subscribers.")
     parser.add_argument("subscriber_names", nargs="*", help="Names of the subscribers to add.")
+    parser.add_argument(
+        "--replace-existing",
+        action="store_true",
+        help="Delete and recreate configured subscribers whose IMSIs already exist.",
+    )
     args = parser.parse_args()
-    run_with_port_forwarding(partial(add_subscribers, args.subscriber_names))
-    
+    run_with_port_forwarding(
+        partial(add_subscribers, args.subscriber_names, args.replace_existing)
+    )

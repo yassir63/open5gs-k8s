@@ -6,6 +6,13 @@ STATEFULSET="${STATEFULSET:-ueransim-ue-churn}"
 COUNTS="10 25 50"
 SETTLE_SECONDS=60
 BETWEEN_SECONDS=30
+MAPPER_NAMESPACE="${MAPPER_NAMESPACE:-$NAMESPACE}"
+MAPPER_SERVICE="${MAPPER_SERVICE:-ue-mapper-api}"
+MAPPER_LOCAL_PORT="${MAPPER_LOCAL_PORT:-18081}"
+REQUIRE_MAPPER_REGISTRATION="${REQUIRE_MAPPER_REGISTRATION:-true}"
+MAPPER_WAIT_SECONDS="${MAPPER_WAIT_SECONDS:-180}"
+MAPPER_PF_PID=""
+BASELINE_MAPPER_COUNT=0
 
 usage() {
   cat <<EOF
@@ -65,6 +72,69 @@ ready_count() {
     | grep -c '^true$' || true
 }
 
+mapper_inventory_count() {
+  python3 - "$MAPPER_LOCAL_PORT" <<'PY'
+import json
+import sys
+import urllib.request
+
+port = int(sys.argv[1])
+with urllib.request.urlopen(
+    f"http://127.0.0.1:{port}/inventory/ues?limit=10000",
+    timeout=10,
+) as response:
+    payload = json.load(response)
+print(int(payload["count"]))
+PY
+}
+
+start_mapper_port_forward() {
+  if [ "$REQUIRE_MAPPER_REGISTRATION" != "true" ]; then
+    return 0
+  fi
+
+  kubectl port-forward -n "$MAPPER_NAMESPACE" "svc/$MAPPER_SERVICE" \
+    "${MAPPER_LOCAL_PORT}:80" > /tmp/ueransim-churn-mapper-port-forward.log 2>&1 &
+  MAPPER_PF_PID=$!
+  sleep 3
+  if ! kill -0 "$MAPPER_PF_PID" >/dev/null 2>&1; then
+    cat /tmp/ueransim-churn-mapper-port-forward.log >&2 || true
+    echo "UE mapper port-forward failed" >&2
+    return 1
+  fi
+  BASELINE_MAPPER_COUNT="$(mapper_inventory_count)"
+  echo "Baseline UE mapper inventory count: ${BASELINE_MAPPER_COUNT}"
+}
+
+stop_mapper_port_forward() {
+  if [ -n "$MAPPER_PF_PID" ]; then
+    kill "$MAPPER_PF_PID" >/dev/null 2>&1 || true
+    wait "$MAPPER_PF_PID" >/dev/null 2>&1 || true
+  fi
+}
+
+wait_for_mapper_count() {
+  local expected="$1"
+  local comparison="$2"
+  local deadline=$((SECONDS + MAPPER_WAIT_SECONDS))
+  while [ "$SECONDS" -lt "$deadline" ]; do
+    local mapped
+    mapped="$(mapper_inventory_count 2>/dev/null || echo -1)"
+    if [ "$comparison" = "at-least" ] && [ "$mapped" -ge "$expected" ]; then
+      echo "UE mapper inventory count: ${mapped} (expected at least ${expected})"
+      return 0
+    fi
+    if [ "$comparison" = "at-most" ] && [ "$mapped" -le "$expected" ] && [ "$mapped" -ge 0 ]; then
+      echo "UE mapper inventory count: ${mapped} (expected at most ${expected})"
+      return 0
+    fi
+    echo "Waiting for UE mapper inventory: ${mapped}/${expected} (${comparison})"
+    sleep 5
+  done
+  echo "Timed out waiting for UE mapper inventory count ${comparison} ${expected}" >&2
+  return 1
+}
+
 wait_for_count() {
   local expected="$1"
   local deadline=$((SECONDS + 300))
@@ -100,6 +170,8 @@ wait_for_ready() {
 
 echo "UERANSIM AMF churn run started at $(timestamp)"
 echo "namespace=${NAMESPACE} statefulset=${STATEFULSET} counts=${COUNTS}"
+trap stop_mapper_port_forward EXIT
+start_mapper_port_forward
 
 for count in $COUNTS; do
   echo
@@ -107,12 +179,18 @@ for count in $COUNTS; do
   kubectl scale "statefulset/${STATEFULSET}" -n "$NAMESPACE" --replicas="$count"
   wait_for_count "$count"
   wait_for_ready "$count"
+  if [ "$REQUIRE_MAPPER_REGISTRATION" = "true" ]; then
+    wait_for_mapper_count "$((BASELINE_MAPPER_COUNT + count))" "at-least"
+  fi
   echo "==== $(timestamp) holding ${count} UEs for ${SETTLE_SECONDS}s ===="
   sleep "$SETTLE_SECONDS"
 
   echo "==== $(timestamp) scaling down to 0 UEs ===="
   kubectl scale "statefulset/${STATEFULSET}" -n "$NAMESPACE" --replicas=0
   wait_for_count 0
+  if [ "$REQUIRE_MAPPER_REGISTRATION" = "true" ]; then
+    wait_for_mapper_count "$BASELINE_MAPPER_COUNT" "at-most"
+  fi
   echo "==== $(timestamp) detached all UEs; waiting ${BETWEEN_SECONDS}s ===="
   sleep "$BETWEEN_SECONDS"
 done

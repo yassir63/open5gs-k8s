@@ -9,15 +9,26 @@ TYPE_IPV4 = 1
 STATUS_DISABLED = 1
 
 
-def slice_data():
+def normalize_sd(value):
+    sd = str(value).strip().lower().replace("0x", "")
+    if not sd or sd in {"empty", "none", "null"}:
+        return "ffffff"
+    if len(sd) > 6 or any(char not in "0123456789abcdef" for char in sd):
+        raise argparse.ArgumentTypeError(
+            f"invalid SD {value!r}; expected EMPTY or up to 6 hexadecimal digits"
+        )
+    return sd.zfill(6)
+
+
+def slice_data(args):
     return {
         "slice_1": {
-            "sst": 1,
-            "sd": "000001",
+            "sst": args.slice1_sst,
+            "sd": normalize_sd(args.slice1_sd),
             "default_indicator": True,
             "session": [
                 {
-                    "name": "internet",
+                    "name": args.slice1_dnn,
                     "type": TYPE_IPV4,
                     "pcc_rule": [],
                     "ambr": {
@@ -36,12 +47,12 @@ def slice_data():
             ],
         },
         "slice_2": {
-            "sst": 1,
-            "sd": "000002",
+            "sst": args.slice2_sst,
+            "sd": normalize_sd(args.slice2_sd),
             "default_indicator": True,
             "session": [
                 {
-                    "name": "streaming",
+                    "name": args.slice2_dnn,
                     "type": TYPE_IPV4,
                     "pcc_rule": [],
                     "ambr": {
@@ -98,6 +109,12 @@ def main():
     )
     parser.add_argument("--start-suffix", type=int, default=0, help="Numeric suffix for the first IMSI.")
     parser.add_argument("--data-dir", default="data", help="Directory for slices.yaml and subscribers.yaml.")
+    parser.add_argument("--slice1-sst", type=int, default=1)
+    parser.add_argument("--slice1-sd", default="ffffff")
+    parser.add_argument("--slice1-dnn", default="internet")
+    parser.add_argument("--slice2-sst", type=int, default=1)
+    parser.add_argument("--slice2-sd", default="100000")
+    parser.add_argument("--slice2-dnn", default="streaming")
     args = parser.parse_args()
 
     if args.count < 1:
@@ -112,7 +129,7 @@ def main():
     data_dir = Path(args.data_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    slices = slice_data()
+    slices = slice_data(args)
     subscribers = {}
     for ordinal in range(args.count):
         suffix = args.start_suffix + ordinal
@@ -132,6 +149,13 @@ def main():
         "IMSI range: "
         f"{args.imsi_prefix}{args.start_suffix:05d} - "
         f"{args.imsi_prefix}{args.start_suffix + args.count - 1:05d}"
+    )
+    print(
+        "Slices: "
+        f"slice_1={slices['slice_1']['sst']}:{slices['slice_1']['sd']}"
+        f"/{args.slice1_dnn}, "
+        f"slice_2={slices['slice_2']['sst']}:{slices['slice_2']['sd']}"
+        f"/{args.slice2_dnn}"
     )
 
 

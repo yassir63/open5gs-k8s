@@ -55,12 +55,16 @@ spec:
               value: "gnb-service"
             - name: UE_SLICE1_APN
               value: "internet"
+            - name: UE_SLICE1_SST
+              value: "1"
             - name: UE_SLICE1_SD
-              value: "000001"
+              value: "ffffff"
             - name: UE_SLICE2_APN
               value: "streaming"
+            - name: UE_SLICE2_SST
+              value: "1"
             - name: UE_SLICE2_SD
-              value: "000002"
+              value: "100000"
           volumeMounts:
             - mountPath: /ueransim/config
               name: ue-churn-volume
