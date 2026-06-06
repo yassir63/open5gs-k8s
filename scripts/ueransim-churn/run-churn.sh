@@ -13,6 +13,7 @@ REQUIRE_MAPPER_REGISTRATION="${REQUIRE_MAPPER_REGISTRATION:-true}"
 MAPPER_WAIT_SECONDS="${MAPPER_WAIT_SECONDS:-180}"
 MAPPER_PF_PID=""
 BASELINE_MAPPER_COUNT=0
+GRACEFUL_DEREGISTRATION="${GRACEFUL_DEREGISTRATION:-true}"
 
 usage() {
   cat <<EOF
@@ -135,6 +136,57 @@ wait_for_mapper_count() {
   return 1
 }
 
+graceful_deregister_ues() {
+  if [ "$GRACEFUL_DEREGISTRATION" != "true" ]; then
+    echo "Graceful UE deregistration disabled; scaling pods down directly."
+    return 0
+  fi
+
+  local pods
+  pods="$(kubectl get pods -n "$NAMESPACE" \
+    -l app=ueransim,component=ue,profile=churn \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')"
+
+  if [ -z "$pods" ]; then
+    return 0
+  fi
+
+  echo "Triggering parallel NAS deregistration for active UEs..."
+  local pids=()
+  local pod
+  for pod in $pods; do
+    (
+      kubectl exec -n "$NAMESPACE" "$pod" -- /bin/bash -c '
+        set -e
+        CLI="/ueransim/nr-cli"
+        if [ ! -x "$CLI" ]; then
+          CLI="$(command -v nr-cli)"
+        fi
+        NODE="$("$CLI" --dump | awk "/^imsi-/ { print \$1; exit }")"
+        if [ -z "$NODE" ]; then
+          echo "No active UERANSIM UE node found" >&2
+          exit 1
+        fi
+        echo "Deregistering $NODE with disable-5g"
+        "$CLI" "$NODE" --exec "deregister disable-5g"
+      '
+    ) &
+    pids+=("$!")
+  done
+
+  local failed=0
+  local pid
+  for pid in "${pids[@]}"; do
+    if ! wait "$pid"; then
+      failed=1
+    fi
+  done
+  if [ "$failed" -ne 0 ]; then
+    echo "At least one UERANSIM UE failed graceful deregistration" >&2
+    return 1
+  fi
+}
+
 wait_for_count() {
   local expected="$1"
   local deadline=$((SECONDS + 300))
@@ -185,12 +237,14 @@ for count in $COUNTS; do
   echo "==== $(timestamp) holding ${count} UEs for ${SETTLE_SECONDS}s ===="
   sleep "$SETTLE_SECONDS"
 
-  echo "==== $(timestamp) scaling down to 0 UEs ===="
-  kubectl scale "statefulset/${STATEFULSET}" -n "$NAMESPACE" --replicas=0
-  wait_for_count 0
+  echo "==== $(timestamp) gracefully deregistering ${count} UEs ===="
+  graceful_deregister_ues
   if [ "$REQUIRE_MAPPER_REGISTRATION" = "true" ]; then
     wait_for_mapper_count "$BASELINE_MAPPER_COUNT" "at-most"
   fi
+  echo "==== $(timestamp) scaling down to 0 UE pods ===="
+  kubectl scale "statefulset/${STATEFULSET}" -n "$NAMESPACE" --replicas=0
+  wait_for_count 0
   echo "==== $(timestamp) detached all UEs; waiting ${BETWEEN_SECONDS}s ===="
   sleep "$BETWEEN_SECONDS"
 done

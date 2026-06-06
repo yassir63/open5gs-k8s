@@ -22,10 +22,11 @@ The generated IMSIs start at:
 001010000100000
 ```
 
-and alternate between:
+and alternate between the two slices supplied by the active `fiveg_profile`.
+With the default profile these are:
 
-- slice `1-000001`, DNN `internet`
-- slice `1-000002`, DNN `streaming`
+- slice `1-ffffff`, DNN `internet`
+- slice `1-100000`, DNN `streaming`
 
 ## Deploy gNB and Scalable UE StatefulSet
 
@@ -40,6 +41,11 @@ The UE StatefulSet starts at `0` replicas so you can begin from a clean baseline
 ```bash
 scripts/ueransim-churn/run-churn.sh --counts "10 25 50 100" --settle-seconds 90
 ```
+
+Before scaling each wave down, the runner invokes `nr-cli` in every UE pod
+with `deregister disable-5g`. It waits until the UE mapper returns to its
+baseline inventory count, then removes the pods. This ensures detach waves
+represent control-plane deregistration instead of abrupt container deletion.
 
 ## Cleanup
 
